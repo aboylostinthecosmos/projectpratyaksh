@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Pratyaksh | Science Before Your Eyes</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet">
+    <!-- Changed font to 'Rajdhani' for a technical/scientific look -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Montserrat:wght@300;400;600;800&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -19,6 +20,7 @@
                     fontFamily: {
                         sans: ['Montserrat', 'sans-serif'],
                         sanskrit: ['"Tiro Devanagari Sanskrit"', 'serif'],
+                        sci: ['Rajdhani', 'sans-serif'], // New Scientific Font
                     }
                 }
             }
@@ -63,20 +65,21 @@
                 <!-- Logo -->
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-full bg-gradient-to-br from-pratyakshOrange to-pratyakshGreen flex items-center justify-center font-bold text-xs overflow-hidden">
-                        <!-- UPDATED: Now looks for logo.png -->
+                        <!-- Logo Image -->
                         <img src="logo.png" alt="PP" class="w-full h-full object-cover opacity-90" onerror="this.style.display='none';this.parentElement.innerHTML='PP'">
                     </div>
-                    <span class="font-bold text-xl tracking-wider">PROJECT <span class="text-pratyakshOrange">PRATYAKSH</span></span>
+                    <!-- Applied Sci Font here -->
+                    <span class="font-sci font-bold text-2xl tracking-wide">PROJECT <span class="text-pratyakshOrange">PRATYAKSH</span></span>
                 </div>
 
                 <!-- Desktop Menu -->
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#home" class="hover:text-pratyakshOrange px-3 py-2 rounded-md text-sm font-medium transition">Home</a>
-                        <a href="#mission" class="hover:text-pratyakshOrange px-3 py-2 rounded-md text-sm font-medium transition">Mission</a>
-                        <a href="#method" class="hover:text-pratyakshOrange px-3 py-2 rounded-md text-sm font-medium transition">Method</a>
-                        <a href="#programs" class="hover:text-pratyakshOrange px-3 py-2 rounded-md text-sm font-medium transition">Syllabus</a>
-                        <a href="#contact" class="bg-white text-black hover:bg-pratyakshOrange hover:text-white px-4 py-2 rounded-full text-sm font-bold transition">Contact Us</a>
+                        <a href="#home" class="hover:text-pratyakshOrange px-3 py-2 rounded-md text-lg font-bold font-sci tracking-wide transition">HOME</a>
+                        <a href="#mission" class="hover:text-pratyakshOrange px-3 py-2 rounded-md text-lg font-bold font-sci tracking-wide transition">MISSION</a>
+                        <a href="#method" class="hover:text-pratyakshOrange px-3 py-2 rounded-md text-lg font-bold font-sci tracking-wide transition">METHOD</a>
+                        <a href="#programs" class="hover:text-pratyakshOrange px-3 py-2 rounded-md text-lg font-bold font-sci tracking-wide transition">SYLLABUS</a>
+                        <a href="#contact" class="bg-white text-black hover:bg-pratyakshOrange hover:text-white px-4 py-2 rounded-full text-lg font-bold font-sci transition">CONTACT</a>
                     </div>
                 </div>
 
@@ -93,12 +96,12 @@
 
         <!-- Mobile Menu (Hidden by default) -->
         <div id="mobile-menu" class="hidden md:hidden bg-spaceBlack border-t border-white/10">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium hover:text-pratyakshOrange hover:bg-white/5">Home</a>
-                <a href="#mission" class="block px-3 py-2 rounded-md text-base font-medium hover:text-pratyakshOrange hover:bg-white/5">Mission</a>
-                <a href="#method" class="block px-3 py-2 rounded-md text-base font-medium hover:text-pratyakshOrange hover:bg-white/5">Method</a>
-                <a href="#programs" class="block px-3 py-2 rounded-md text-base font-medium hover:text-pratyakshOrange hover:bg-white/5">Syllabus</a>
-                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-pratyakshOrange font-bold">Contact Us</a>
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <a href="#home" class="block px-3 py-2 rounded-md text-base font-bold font-sci tracking-wide hover:text-pratyakshOrange hover:bg-white/5">HOME</a>
+                <a href="#mission" class="block px-3 py-2 rounded-md text-base font-bold font-sci tracking-wide hover:text-pratyakshOrange hover:bg-white/5">MISSION</a>
+                <a href="#method" class="block px-3 py-2 rounded-md text-base font-bold font-sci tracking-wide hover:text-pratyakshOrange hover:bg-white/5">METHOD</a>
+                <a href="#programs" class="block px-3 py-2 rounded-md text-base font-bold font-sci tracking-wide hover:text-pratyakshOrange hover:bg-white/5">SYLLABUS</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-bold font-sci tracking-wide text-pratyakshOrange">CONTACT US</a>
             </div>
         </div>
     </nav>
@@ -110,20 +113,21 @@
 
         <div class="text-center z-10 px-4 max-w-4xl mx-auto">
             <p class="font-sanskrit text-pratyakshOrange text-lg md:text-2xl mb-4 tracking-wide">प्रत्यक्षं किं प्रमाणम्</p>
-            <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
-                Science Before <br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-pratyakshOrange to-pratyakshGreen">Your Eyes</span>
+            <!-- Applied Sci Font here -->
+            <h1 class="font-sci text-5xl sm:text-6xl md:text-8xl font-bold mb-6 leading-none tracking-normal uppercase">
+                SCIENCE BEFORE <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-pratyakshOrange to-pratyakshGreen">YOUR EYES</span>
             </h1>
-            <p class="text-gray-400 text-base md:text-xl mb-10 max-w-2xl mx-auto px-4">
+            <p class="text-gray-400 text-base md:text-xl mb-10 max-w-2xl mx-auto px-4 font-sans">
                 A student-led initiative to replace rote learning with observation. 
                 Zero Cost. Zero Labs. Pure Curiosity.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center px-4">
-                <a href="#contact" class="px-8 py-4 bg-pratyakshOrange hover:bg-orange-600 rounded-lg font-bold text-lg transition shadow-lg shadow-orange-500/20 w-full sm:w-auto">
-                    Invite Us to Your School
+                <a href="#contact" class="px-8 py-4 bg-pratyakshOrange hover:bg-orange-600 rounded-lg font-bold font-sci tracking-wide text-lg transition shadow-lg shadow-orange-500/20 w-full sm:w-auto">
+                    INVITE US
                 </a>
-                <a href="#mission" class="px-8 py-4 glass-card hover:bg-white/10 rounded-lg font-bold text-lg transition border border-white/20 w-full sm:w-auto">
-                    Read Our Vision
+                <a href="#mission" class="px-8 py-4 glass-card hover:bg-white/10 rounded-lg font-bold font-sci tracking-wide text-lg transition border border-white/20 w-full sm:w-auto">
+                    OUR VISION
                 </a>
             </div>
         </div>
@@ -134,7 +138,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Why <span class="text-pratyakshGreen">Project Pratyaksh?</span></h2>
+                    <!-- Applied Sci Font here -->
+                    <h2 class="font-sci text-4xl md:text-5xl font-bold mb-6 uppercase">Why <span class="text-pratyakshGreen">Project Pratyaksh?</span></h2>
                     <p class="text-gray-400 mb-6 leading-relaxed">
                         Students often memorize definitions of Gravity and Light, but they rarely <em>feel</em> the wonder of it. Science becomes a burden of textbooks rather than a lens to view the universe.
                     </p>
@@ -157,24 +162,24 @@
                     </ul>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-8 md:mt-0">
-                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center">
+                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center hover:bg-white/5 transition">
                         <div class="text-4xl mb-2">🔭</div>
-                        <h3 class="font-bold">Astronomy</h3>
+                        <h3 class="font-bold font-sci tracking-wide text-xl">ASTRONOMY</h3>
                         <p class="text-xs text-gray-500 mt-2">Connecting Earth to the Cosmos</p>
                     </div>
-                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center mt-8">
+                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center mt-8 hover:bg-white/5 transition">
                         <div class="text-4xl mb-2">⚛️</div>
-                        <h3 class="font-bold">Physics</h3>
+                        <h3 class="font-bold font-sci tracking-wide text-xl">PHYSICS</h3>
                         <p class="text-xs text-gray-500 mt-2">Laws of Motion & Light</p>
                     </div>
-                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center">
+                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center hover:bg-white/5 transition">
                         <div class="text-4xl mb-2">🧠</div>
-                        <h3 class="font-bold">Logic</h3>
+                        <h3 class="font-bold font-sci tracking-wide text-xl">LOGIC</h3>
                         <p class="text-xs text-gray-500 mt-2">Critical Thinking</p>
                     </div>
-                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center mt-8">
+                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center mt-8 hover:bg-white/5 transition">
                         <div class="text-4xl mb-2">🇮🇳</div>
-                        <h3 class="font-bold">Impact</h3>
+                        <h3 class="font-bold font-sci tracking-wide text-xl">IMPACT</h3>
                         <p class="text-xs text-gray-500 mt-2">Serving Local Schools</p>
                     </div>
                 </div>
@@ -185,36 +190,37 @@
     <!-- Methodology Section -->
     <section id="method" class="py-20 bg-spaceGray border-t border-b border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12">Our Teaching <span class="text-pratyakshOrange">Style</span></h2>
+            <!-- Applied Sci Font here -->
+            <h2 class="font-sci text-4xl md:text-5xl font-bold mb-12 uppercase">Our Teaching <span class="text-pratyakshOrange">Style</span></h2>
             <p class="text-gray-400 max-w-2xl mx-auto mb-16">
                 We don't lecture; we explore. Our "Universal Class Flow" ensures that every student builds knowledge through their own observation.
             </p>
             
             <!-- The 5 Steps -->
             <div class="grid md:grid-cols-5 gap-10 md:gap-6 max-w-6xl mx-auto">
-                <div class="flow-step glass-card p-6 rounded-xl">
+                <div class="flow-step glass-card p-6 rounded-xl hover:border-pratyakshOrange/50 transition">
                     <div class="text-3xl mb-3">🎣</div>
-                    <h3 class="font-bold text-pratyakshOrange">1. The Spark</h3>
+                    <h3 class="font-bold text-pratyakshOrange font-sci tracking-wide text-xl">1. THE SPARK</h3>
                     <p class="text-xs text-gray-400 mt-2">We start with a mystery or a puzzle, never a definition.</p>
                 </div>
-                <div class="flow-step glass-card p-6 rounded-xl">
+                <div class="flow-step glass-card p-6 rounded-xl hover:border-white/50 transition">
                     <div class="text-3xl mb-3">🧪</div>
-                    <h3 class="font-bold text-white">2. The Action</h3>
+                    <h3 class="font-bold text-white font-sci tracking-wide text-xl">2. THE ACTION</h3>
                     <p class="text-xs text-gray-400 mt-2">Students use their bodies and simple tools to <em>feel</em> the concept.</p>
                 </div>
-                <div class="flow-step glass-card p-6 rounded-xl">
+                <div class="flow-step glass-card p-6 rounded-xl hover:border-white/50 transition">
                     <div class="text-3xl mb-3">🗣️</div>
-                    <h3 class="font-bold text-white">3. The Discovery</h3>
+                    <h3 class="font-bold text-white font-sci tracking-wide text-xl">3. DISCOVERY</h3>
                     <p class="text-xs text-gray-400 mt-2">Students describe what they saw. We guide the logic.</p>
                 </div>
-                <div class="flow-step glass-card p-6 rounded-xl">
+                <div class="flow-step glass-card p-6 rounded-xl hover:border-pratyakshGreen/50 transition">
                     <div class="text-3xl mb-3">🔒</div>
-                    <h3 class="font-bold text-pratyakshGreen">4. The Logic</h3>
+                    <h3 class="font-bold text-pratyakshGreen font-sci tracking-wide text-xl">4. THE LOGIC</h3>
                     <p class="text-xs text-gray-400 mt-2">We name the scientific law only <em>after</em> they understand it.</p>
                 </div>
-                <div class="flow-step glass-card p-6 rounded-xl">
+                <div class="flow-step glass-card p-6 rounded-xl hover:border-white/50 transition">
                     <div class="text-3xl mb-3">✨</div>
-                    <h3 class="font-bold text-white">5. The Infinite</h3>
+                    <h3 class="font-bold text-white font-sci tracking-wide text-xl">5. INFINITE</h3>
                     <p class="text-xs text-gray-400 mt-2">We end with an open question to keep them thinking at home.</p>
                 </div>
             </div>
@@ -225,7 +231,8 @@
     <section id="programs" class="py-20 bg-spaceBlack relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Class Modules</h2>
+                <!-- Applied Sci Font here -->
+                <h2 class="font-sci text-4xl md:text-5xl font-bold mb-4 uppercase">Class Modules</h2>
                 <p class="text-gray-400">Tailored content for different developmental stages.</p>
             </div>
 
@@ -235,23 +242,23 @@
                 <div class="glass-card p-8 rounded-2xl border-t-4 border-pratyakshOrange hover:-translate-y-2 transition duration-300">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h3 class="text-2xl font-bold text-white">Module A</h3>
-                            <span class="text-pratyakshOrange text-sm font-bold tracking-widest">CLASSES 1 - 5</span>
+                            <h3 class="text-2xl font-bold text-white font-sci tracking-wider">MODULE A</h3>
+                            <span class="text-pratyakshOrange text-sm font-bold tracking-widest font-sci">CLASSES 1 - 5</span>
                         </div>
                         <div class="text-4xl">🌟</div>
                     </div>
                     
                     <div class="space-y-6">
-                        <div class="bg-white/5 p-4 rounded-lg">
-                            <h4 class="font-bold text-pratyakshOrange">Class A1: Earth & Space Basics</h4>
+                        <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-pratyakshOrange/30 transition">
+                            <h4 class="font-bold text-pratyakshOrange font-sci tracking-wide text-lg">A1: Earth & Space Basics</h4>
                             <p class="text-sm text-gray-400 mt-2">Day/Night, Rotation, Revolution, and an introduction to 'What is Space'.</p>
                         </div>
-                        <div class="bg-white/5 p-4 rounded-lg">
-                            <h4 class="font-bold text-pratyakshOrange">Class A2: Constellations & Solar System</h4>
+                        <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-pratyakshOrange/30 transition">
+                            <h4 class="font-bold text-pratyakshOrange font-sci tracking-wide text-lg">A2: Solar System</h4>
                             <p class="text-sm text-gray-400 mt-2">Connecting stars to make shapes and exploring our planetary family.</p>
                         </div>
-                        <div class="bg-white/5 p-4 rounded-lg">
-                            <h4 class="font-bold text-pratyakshOrange">Class A3: Stars & Beyond</h4>
+                        <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-pratyakshOrange/30 transition">
+                            <h4 class="font-bold text-pratyakshOrange font-sci tracking-wide text-lg">A3: Stars & Beyond</h4>
                             <p class="text-sm text-gray-400 mt-2">What are stars? Why do they shine? A peek into deep space.</p>
                         </div>
                     </div>
@@ -261,24 +268,24 @@
                 <div class="glass-card p-8 rounded-2xl border-t-4 border-pratyakshGreen hover:-translate-y-2 transition duration-300">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h3 class="text-2xl font-bold text-white">Module B</h3>
-                            <span class="text-pratyakshGreen text-sm font-bold tracking-widest">CLASSES 6 - 9</span>
+                            <h3 class="text-2xl font-bold text-white font-sci tracking-wider">MODULE B</h3>
+                            <span class="text-pratyakshGreen text-sm font-bold tracking-widest font-sci">CLASSES 6 - 9</span>
                         </div>
                         <div class="text-4xl">🧠</div>
                     </div>
                     
                     <div class="space-y-6">
-                        <div class="bg-white/5 p-4 rounded-lg">
-                            <h4 class="font-bold text-pratyakshGreen">Class B1: Mechanics of Space</h4>
-                            <p class="text-sm text-gray-400 mt-2">Gravity, Motion, Rotation vs Revolution, and Space dynamics.</p>
+                        <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-pratyakshGreen/30 transition">
+                            <h4 class="font-bold text-pratyakshGreen font-sci tracking-wide text-lg">B1: Mechanics of Space</h4>
+                            <p class="text-sm text-gray-400 mt-2">Gravity, Motion, Rotation vs Revolution, and understanding how orbits actually work.</p>
                         </div>
-                        <div class="bg-white/5 p-4 rounded-lg">
-                            <h4 class="font-bold text-pratyakshGreen">Class B2: Stellar Astrophysics</h4>
+                        <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-pratyakshGreen/30 transition">
+                            <h4 class="font-bold text-pratyakshGreen font-sci tracking-wide text-lg">B2: Stellar Astrophysics</h4>
                             <p class="text-sm text-gray-400 mt-2">Types of Stars, Solar System scale, and Constellation navigation.</p>
                         </div>
-                        <div class="bg-white/5 p-4 rounded-lg">
-                            <h4 class="font-bold text-pratyakshGreen">Class B3: Cosmic Extremes</h4>
-                            <p class="text-sm text-gray-400 mt-2">Spacetime fabric, Black Holes, Pulsars, and Quasars.</p>
+                        <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-pratyakshGreen/30 transition">
+                            <h4 class="font-bold text-pratyakshGreen font-sci tracking-wide text-lg">B3: Cosmic Extremes</h4>
+                            <p class="text-sm text-gray-400 mt-2">The fabric of Spacetime, Black Holes, Pulsars, and Quasars. Pushing physics to the limit.</p>
                         </div>
                     </div>
                 </div>
@@ -290,7 +297,7 @@
     <!-- Call to Action / Contact -->
     <section id="contact" class="py-20 bg-black text-center">
         <div class="max-w-4xl mx-auto px-4">
-            <h2 class="text-3xl md:text-5xl font-bold mb-8">Ready to ignite minds?</h2>
+            <h2 class="font-sci text-3xl md:text-5xl font-bold mb-8 uppercase tracking-wide">Ready to ignite minds?</h2>
             <p class="text-gray-400 text-lg mb-10">
                 We are a non-profit student initiative. Our workshops are 100% free for Government Schools and NGOs.
             </p>
@@ -298,15 +305,15 @@
             <div class="flex flex-col md:flex-row justify-center gap-6 items-center flex-wrap">
                 <a href="mailto:projectpratyaksh@gmail.com" class="flex items-center gap-3 glass-card px-6 py-4 rounded-xl hover:bg-white/10 transition w-full md:w-auto justify-center">
                     <span>📩</span>
-                    <span class="font-bold">projectpratyaksh@gmail.com</span>
+                    <span class="font-bold font-sci tracking-wide">projectpratyaksh@gmail.com</span>
                 </a>
                 <a href="https://instagram.com/projectpratyaksh" target="_blank" class="flex items-center gap-3 glass-card px-6 py-4 rounded-xl hover:bg-white/10 transition w-full md:w-auto justify-center">
                     <span>📸</span>
-                    <span class="font-bold">Instagram</span>
+                    <span class="font-bold font-sci tracking-wide">Instagram</span>
                 </a>
                 <a href="https://www.linkedin.com/in/projectpratyaksh/" target="_blank" class="flex items-center gap-3 glass-card px-6 py-4 rounded-xl hover:bg-white/10 transition w-full md:w-auto justify-center">
                     <span>💼</span>
-                    <span class="font-bold">LinkedIn</span>
+                    <span class="font-bold font-sci tracking-wide">LinkedIn</span>
                 </a>
             </div>
         </div>
@@ -315,7 +322,8 @@
     <!-- Footer -->
     <footer class="border-t border-white/10 py-8 bg-black text-center text-gray-500 text-sm">
         <p class="font-sanskrit text-lg mb-2 text-gray-400">"प्रत्यक्षं किं प्रमाणम्"</p>
-        <p>&copy; 2025 Project Pratyaksh.</p>
+        <p>&copy; 2025 Project Pratyaksh. A Student-Led Initiative.</p>
+        <p class="mt-2 text-xs">Designed with 🧡 & 💚 for Science.</p>
     </footer>
 
 </body>
