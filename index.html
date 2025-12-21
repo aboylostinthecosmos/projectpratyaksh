@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Pratyaksh | Science Before Your Eyes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Certificate Generator | Project Pratyaksh</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Montserrat:wght@300;400;600;800&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Montserrat:wght@300;400;600;800&family=Tiro+Devanagari+Sanskrit&family=Pinyon+Script&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -13,371 +16,437 @@
                     colors: {
                         pratyakshOrange: '#FF9933',
                         pratyakshGreen: '#138808',
-                        spaceBlack: '#0a0a0a',
-                        spaceGray: '#1a1a1a'
+                        offWhite: '#fdfbf7',
                     },
                     fontFamily: {
                         sans: ['Montserrat', 'sans-serif'],
-                        sanskrit: ['"Tiro Devanagari Sanskrit"', 'serif'],
                         sci: ['Rajdhani', 'sans-serif'],
+                        script: ['"Pinyon Script"', 'cursive'], 
+                        sanskrit: ['"Tiro Devanagari Sanskrit"', 'serif'],
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #050505; color: white; scroll-behavior: smooth; overflow-x: hidden; }
-        .hero-bg {
-            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .flow-step {
-            position: relative;
-        }
-        .flow-step::after {
-            content: '→';
-            position: absolute;
-            right: -20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #333;
-            font-size: 20px;
-        }
-        .flow-step:last-child::after {
-            content: '';
-        }
-        @media (max-width: 768px) {
-            .flow-step::after { content: '↓'; right: 50%; top: auto; bottom: -30px; transform: translateX(50%); }
+        body { background-color: #1a1a1a; color: white; }
+        
+        select option {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 10px;
         }
 
-        /* --- REPEATABLE ANIMATION STYLES --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(50px) scale(0.95);
-            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        #certificate-preview {
+            width: 1123px;
+            height: 794px;
+            background-color: #fff;
+            color: #1a1a1a;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            overflow: hidden;
+            transform-origin: top left;
+        }
+
+        .preview-container {
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .bg-pattern {
+            background-image: radial-gradient(#e5e5e5 1px, transparent 1px);
+            background-size: 20px 20px;
         }
         
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        /* Staggered Delays for grid items */
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
-        .delay-400 { transition-delay: 400ms; }
-
-        /* Constant Glow Animation for Tagline */
-        @keyframes text-pulse-glow {
-            0%, 100% {
-                text-shadow: 0 0 5px rgba(255, 153, 51, 0.2);
-                color: rgba(255, 255, 255, 0.5);
-            }
-            50% {
-                text-shadow: 0 0 20px rgba(255, 153, 51, 0.8), 0 0 10px rgba(19, 136, 8, 0.5);
-                color: #FF9933; /* pratyakshOrange */
-            }
-        }
-        .animate-tagline {
-            animation: text-pulse-glow 4s ease-in-out infinite;
+        .border-gradient {
+            background: linear-gradient(to right, #FF9933, #138808);
         }
     </style>
 </head>
-<body class="font-sans antialiased">
+<body class="min-h-screen flex flex-col md:flex-row relative">
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <!-- Logo -->
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-pratyakshOrange to-pratyakshGreen flex items-center justify-center font-bold text-xs overflow-hidden">
-                        PP
-                    </div>
-                    <span class="font-sci font-bold text-2xl tracking-wide">PROJECT <span class="text-pratyakshOrange">PRATYAKSH</span></span>
-                </div>
+    <!-- 🔒 SECURITY OVERLAY (Covers entire screen until unlocked) -->
+    <div id="login-overlay" class="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center p-4">
+        <div class="w-full max-w-md bg-white/5 border border-white/10 p-8 rounded-2xl backdrop-blur-md text-center shadow-2xl">
+             <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-pratyakshOrange to-pratyakshGreen flex items-center justify-center font-bold text-2xl text-white mb-6 shadow-lg">PP</div>
+             <h2 class="font-sci text-3xl font-bold mb-2 text-white tracking-wide">RESTRICTED ACCESS</h2>
+             <p class="text-gray-400 text-sm mb-8 font-sans">Official Certificate Generator. <br>Please enter the admin passkey to continue.</p>
+             
+             <input type="password" id="passkey-input" placeholder="Enter Passkey" class="w-full bg-black/50 border border-white/20 rounded-lg px-4 py-4 text-white text-center focus:outline-none focus:border-pratyakshOrange transition font-mono mb-4 text-lg">
+             
+             <button onclick="checkPasskey()" class="w-full py-3 bg-white text-black font-bold font-sci text-xl rounded-lg hover:bg-pratyakshOrange hover:text-white transition shadow-lg tracking-wider">UNLOCK APP</button>
+             <p id="login-msg" class="text-red-500 text-xs mt-4 h-4 font-bold tracking-wider"></p>
+        </div>
+        <p class="absolute bottom-8 text-gray-600 text-xs">Project Pratyaksh Internal Tool</p>
+    </div>
 
-                <!-- Desktop Menu -->
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#home" class="hover:text-pratyakshOrange px-3 py-2 rounded-md text-lg font-bold font-sci tracking-wide transition">HOME</a>
-                        <a href="#mission" class="hover:text-pratyakshOrange px-3 py-2 rounded-md text-lg font-bold font-sci tracking-wide transition">MISSION</a>
-                        <a href="#method" class="hover:text-pratyakshOrange px-3 py-2 rounded-md text-lg font-bold font-sci tracking-wide transition">METHOD</a>
-                        <a href="#programs" class="hover:text-pratyakshOrange px-3 py-2 rounded-md text-lg font-bold font-sci tracking-wide transition">SYLLABUS</a>
-                        <a href="#contact" class="bg-white text-black hover:bg-pratyakshOrange hover:text-white px-4 py-2 rounded-full text-lg font-bold font-sci transition">CONTACT</a>
-                    </div>
+    <!-- LEFT PANEL: CONTROLS -->
+    <div class="w-full md:w-1/3 p-6 md:p-8 bg-black border-r border-white/10 flex flex-col gap-6 overflow-y-auto h-screen relative z-20 shadow-xl">
+        <div>
+            <div class="flex items-center gap-3 mb-6">
+                <!-- Sidebar Logo -->
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-pratyakshOrange to-pratyakshGreen flex items-center justify-center font-bold text-xs text-white overflow-hidden shadow-md border border-white/10">
+                    <img src="logo.png" alt="PP" class="w-full h-full object-cover" onerror="this.style.display='none';this.parentElement.innerText='PP'">
                 </div>
-
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden">
-                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-white hover:text-pratyakshOrange focus:outline-none">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
+                <h1 class="font-sci font-bold text-2xl text-white">GENERATOR</h1>
             </div>
+            <p class="text-gray-400 text-sm mb-4">Official Certificate App for Project Pratyaksh.</p>
         </div>
 
-        <!-- Mobile Menu (Hidden by default) -->
-        <div id="mobile-menu" class="hidden md:hidden bg-spaceBlack border-t border-white/10">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
-                <a href="#home" class="block px-3 py-2 rounded-md text-base font-bold font-sci tracking-wide hover:text-pratyakshOrange hover:bg-white/5">HOME</a>
-                <a href="#mission" class="block px-3 py-2 rounded-md text-base font-bold font-sci tracking-wide hover:text-pratyakshOrange hover:bg-white/5">MISSION</a>
-                <a href="#method" class="block px-3 py-2 rounded-md text-base font-bold font-sci tracking-wide hover:text-pratyakshOrange hover:bg-white/5">METHOD</a>
-                <a href="#programs" class="block px-3 py-2 rounded-md text-base font-bold font-sci tracking-wide hover:text-pratyakshOrange hover:bg-white/5">SYLLABUS</a>
-                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-bold font-sci tracking-wide text-pratyakshOrange">CONTACT US</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero-bg min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-pratyakshOrange/20 rounded-full blur-[128px]"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pratyakshGreen/20 rounded-full blur-[128px]"></div>
-
-        <div class="text-center z-10 px-4 max-w-4xl mx-auto reveal">
-            <p class="font-sanskrit text-pratyakshOrange text-lg md:text-2xl mb-4 tracking-wide">प्रत्यक्षं किं प्रमाणम्</p>
-            <h1 class="font-sci text-5xl sm:text-6xl md:text-8xl font-bold mb-6 leading-none tracking-normal uppercase">
-                SCIENCE BEFORE <br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-pratyakshOrange to-pratyakshGreen">YOUR EYES</span>
-            </h1>
-            <p class="text-gray-400 text-base md:text-xl mb-10 max-w-2xl mx-auto px-4 font-sans">
-                A student-led, zero-cost initiative to replace rote learning with observation and <span class="text-white font-bold">Pure Curiosity</span>.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center px-4">
-                <a href="#contact" class="px-8 py-4 bg-pratyakshOrange hover:bg-orange-600 rounded-lg font-bold font-sci tracking-wide text-lg transition shadow-lg shadow-orange-500/20 w-full sm:w-auto">
-                    INVITE US
-                </a>
-                <a href="#mission" class="px-8 py-4 glass-card hover:bg-white/10 rounded-lg font-bold font-sci tracking-wide text-lg transition border border-white/20 w-full sm:w-auto">
-                    OUR VISION
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- The Mission Section -->
-    <section id="mission" class="py-20 bg-spaceBlack">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="reveal">
-                    <h2 class="font-sci text-4xl md:text-5xl font-bold mb-6 uppercase">Why <span class="text-pratyakshGreen">Project Pratyaksh?</span></h2>
-                    <p class="text-gray-400 mb-6 leading-relaxed">
-                        Students often memorize definitions of Gravity and Light, but they rarely <em>feel</em> the wonder of it. Science becomes a burden of textbooks rather than a lens to view the universe.
-                    </p>
-                    <p class="text-gray-400 mb-6 leading-relaxed">
-                        We believe that you don't need a million-dollar lab to learn Physics. You just need a curious mind and the eyes to see.
-                    </p>
-                    <ul class="space-y-4 mt-8">
-                        <li class="flex items-center gap-3">
-                            <span class="w-2 h-2 bg-pratyakshOrange rounded-full"></span>
-                            <span><strong>Pratyaksha:</strong> Direct Perception over Theory.</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <span class="w-2 h-2 bg-pratyakshGreen rounded-full"></span>
-                            <span><strong>Zero Cost:</strong> Accessible to every child.</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <span class="w-2 h-2 bg-white rounded-full"></span>
-                            <span><strong>Pure Science:</strong> Fostering deep questioning.</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="grid grid-cols-2 gap-4 mt-8 md:mt-0">
-                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center hover:bg-white/5 transition reveal delay-100">
-                        <div class="text-4xl mb-2">🔭</div>
-                        <h3 class="font-bold font-sci tracking-wide text-xl">ASTRONOMY</h3>
-                        <p class="text-xs text-gray-500 mt-2">Connecting Earth to the Cosmos</p>
-                    </div>
-                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center mt-8 hover:bg-white/5 transition reveal delay-200">
-                        <div class="text-4xl mb-2">⚛️</div>
-                        <h3 class="font-bold font-sci tracking-wide text-xl">PHYSICS</h3>
-                        <p class="text-xs text-gray-500 mt-2">Laws of Motion & Light</p>
-                    </div>
-                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center hover:bg-white/5 transition reveal delay-100">
-                        <div class="text-4xl mb-2">🧠</div>
-                        <h3 class="font-bold font-sci tracking-wide text-xl">LOGIC</h3>
-                        <p class="text-xs text-gray-500 mt-2">Critical Thinking</p>
-                    </div>
-                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center mt-8 hover:bg-white/5 transition reveal delay-200">
-                        <div class="text-4xl mb-2">🇮🇳</div>
-                        <h3 class="font-bold font-sci tracking-wide text-xl">IMPACT</h3>
-                        <p class="text-xs text-gray-500 mt-2">Serving Local Schools</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Methodology Section -->
-    <section id="method" class="py-20 bg-spaceGray border-t border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="font-sci text-4xl md:text-5xl font-bold mb-12 uppercase reveal">Our Teaching <span class="text-pratyakshOrange">Style</span></h2>
-            <p class="text-gray-400 max-w-2xl mx-auto mb-16 reveal">
-                We don't lecture; we explore. Our "Universal Class Flow" ensures that every student builds knowledge through their own observation.
-            </p>
+        <!-- Inputs -->
+        <div class="space-y-4">
             
-            <!-- The 5 Steps -->
-            <div class="grid md:grid-cols-5 gap-10 md:gap-6 max-w-6xl mx-auto">
-                <div class="flow-step glass-card p-6 rounded-xl hover:border-pratyakshOrange/50 transition reveal delay-100">
-                    <div class="text-3xl mb-3">🎣</div>
-                    <h3 class="font-bold text-pratyakshOrange font-sci tracking-wide text-xl">1. THE SPARK</h3>
-                    <p class="text-xs text-gray-400 mt-2">We start with a mystery or a puzzle, never a definition.</p>
-                </div>
-                <div class="flow-step glass-card p-6 rounded-xl hover:border-white/50 transition reveal delay-200">
-                    <div class="text-3xl mb-3">🧪</div>
-                    <h3 class="font-bold text-white font-sci tracking-wide text-xl">2. THE ACTION</h3>
-                    <p class="text-xs text-gray-400 mt-2">Students use their bodies and simple tools to <em>feel</em> the concept.</p>
-                </div>
-                <div class="flow-step glass-card p-6 rounded-xl hover:border-white/50 transition reveal delay-300">
-                    <div class="text-3xl mb-3">🗣️</div>
-                    <h3 class="font-bold text-white font-sci tracking-wide text-xl">3. DISCOVERY</h3>
-                    <p class="text-xs text-gray-400 mt-2">Students describe what they saw. We guide the logic.</p>
-                </div>
-                <div class="flow-step glass-card p-6 rounded-xl hover:border-pratyakshGreen/50 transition reveal delay-400">
-                    <div class="text-3xl mb-3">🔒</div>
-                    <h3 class="font-bold text-pratyakshGreen font-sci tracking-wide text-xl">4. THE LOGIC</h3>
-                    <p class="text-xs text-gray-400 mt-2">We name the scientific law only <em>after</em> they understand it.</p>
-                </div>
-                <div class="flow-step glass-card p-6 rounded-xl hover:border-white/50 transition reveal delay-200">
-                    <div class="text-3xl mb-3">✨</div>
-                    <h3 class="font-bold text-white font-sci tracking-wide text-xl">5. INFINITE</h3>
-                    <p class="text-xs text-gray-400 mt-2">We end with an open question to keep them thinking at home.</p>
+            <!-- Type Toggle -->
+            <div>
+                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">Certificate Type</label>
+                <div class="flex bg-white/5 p-1 rounded-lg">
+                    <button onclick="setMode('school')" id="btn-school" class="flex-1 py-2 rounded-md text-sm font-bold transition bg-pratyakshOrange text-white">For School</button>
+                    <button onclick="setMode('student')" id="btn-student" class="flex-1 py-2 rounded-md text-sm font-bold transition text-gray-400 hover:text-white">For Student</button>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Syllabus Section -->
-    <section id="programs" class="py-20 bg-spaceBlack relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal">
-                <h2 class="font-sci text-4xl md:text-5xl font-bold mb-4 uppercase">Class Modules</h2>
-                <p class="text-gray-400">Tailored content for different developmental stages.</p>
+            <!-- School Name -->
+            <div>
+                <label class="block text-xs font-bold text-pratyakshOrange mb-2 uppercase tracking-wider">School Name</label>
+                <input type="text" id="input-school" placeholder="e.g. Govt High School" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-pratyakshOrange transition font-sci tracking-wide" oninput="updateCert()">
             </div>
-
-            <div class="grid md:grid-cols-2 gap-8">
-                
-                <!-- MODULE A -->
-                <div class="glass-card p-8 rounded-2xl border-t-4 border-pratyakshOrange hover:-translate-y-2 transition duration-300 reveal delay-100">
-                    <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <h3 class="text-2xl font-bold text-white font-sci tracking-wider">MODULE A</h3>
-                            <span class="text-pratyakshOrange text-sm font-bold tracking-widest font-sci">CLASSES 1 - 5</span>
-                        </div>
-                        <div class="text-4xl">🌟</div>
-                    </div>
-                    
-                    <div class="space-y-6">
-                        <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-pratyakshOrange/30 transition">
-                            <h4 class="font-bold text-pratyakshOrange font-sci tracking-wide text-lg">A1: Earth & Space Basics</h4>
-                            <p class="text-sm text-gray-400 mt-2">Day/Night, Rotation, Revolution, and an introduction to 'What is Space'.</p>
-                        </div>
-                        <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-pratyakshOrange/30 transition">
-                            <h4 class="font-bold text-pratyakshOrange font-sci tracking-wide text-lg">A2: Solar System</h4>
-                            <p class="text-sm text-gray-400 mt-2">Connecting stars to make shapes and exploring our planetary family.</p>
-                        </div>
-                        <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-pratyakshOrange/30 transition">
-                            <h4 class="font-bold text-pratyakshOrange font-sci tracking-wide text-lg">A3: Stars & Beyond</h4>
-                            <p class="text-sm text-gray-400 mt-2">What are stars? Why do they shine? A peek into deep space.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- MODULE B -->
-                <div class="glass-card p-8 rounded-2xl border-t-4 border-pratyakshGreen hover:-translate-y-2 transition duration-300 reveal delay-200">
-                    <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <h3 class="text-2xl font-bold text-white font-sci tracking-wider">MODULE B</h3>
-                            <span class="text-pratyakshGreen text-sm font-bold tracking-widest font-sci">CLASSES 6 - 9</span>
-                        </div>
-                        <div class="text-4xl">🧠</div>
-                    </div>
-                    
-                    <div class="space-y-6">
-                        <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-pratyakshGreen/30 transition">
-                            <h4 class="font-bold text-pratyakshGreen font-sci tracking-wide text-lg">B1: Mechanics of Space</h4>
-                            <p class="text-sm text-gray-400 mt-2">Gravity, Motion, Rotation vs Revolution, and understanding how orbits actually work.</p>
-                        </div>
-                        <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-pratyakshGreen/30 transition">
-                            <h4 class="font-bold text-pratyakshGreen font-sci tracking-wide text-lg">B2: Stellar Astrophysics</h4>
-                            <p class="text-sm text-gray-400 mt-2">Types of Stars, Solar System scale, and Constellation navigation.</p>
-                        </div>
-                        <div class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-pratyakshGreen/30 transition">
-                            <h4 class="font-bold text-pratyakshGreen font-sci tracking-wide text-lg">B3: Cosmic Extremes</h4>
-                            <p class="text-sm text-gray-400 mt-2">The fabric of Spacetime, Black Holes, Pulsars, and Quasars. Pushing physics to the limit.</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action / Contact -->
-    <section id="contact" class="py-20 bg-black text-center">
-        <div class="max-w-4xl mx-auto px-4 reveal">
-            <h2 class="font-sci text-3xl md:text-5xl font-bold mb-8 uppercase tracking-wide">Ready to ignite minds?</h2>
-            <p class="text-gray-400 text-lg mb-10">
-                We are a non-profit student initiative. Our workshops are 100% free for Schools and NGOs.
-            </p>
             
-            <div class="flex flex-col md:flex-row justify-center gap-6 items-center flex-wrap">
-                <a href="mailto:projectpratyaksh@gmail.com" class="flex items-center gap-3 glass-card px-6 py-4 rounded-xl hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,153,51,0.3)] hover:border-pratyakshOrange/50 hover:-translate-y-1 transition-all duration-300 w-full md:w-auto justify-center">
-                    <span>📩</span>
-                    <span class="font-bold font-sci tracking-wide">projectpratyaksh@gmail.com</span>
-                </a>
+            <!-- LOGO UPLOAD -->
+            <div>
+                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">School Logo (Optional)</label>
+                <div class="relative">
+                    <input type="file" id="input-logo" accept="image/*" class="w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-white/10 file:text-white hover:file:bg-white/20 transition cursor-pointer" onchange="updateLogo()">
+                </div>
+            </div>
+
+            <!-- Module Selector (NOW VISIBLE FOR BOTH) -->
+            <div>
+                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">Module Completed/Conducted</label>
+                <select id="input-module" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-pratyakshOrange transition font-sci tracking-wide text-sm" onchange="updateCert()">
+                    <option value="">General / None</option>
+                    <option value="Module A: Earth & Space Basics (Classes 1-5)">Module A (Classes 1-5)</option>
+                    <option value="Module B: Mechanics & Astrophysics (Classes 6-9)">Module B (Classes 6-9)</option>
+                    <option value="Modules A & B: Complete Program">Modules A & B (Complete Program)</option>
+                </select>
+            </div>
+
+            <!-- Student Name (Only for Student Mode) -->
+            <div id="student-fields" class="hidden">
+                <label class="block text-xs font-bold text-pratyakshGreen mb-2 uppercase tracking-wider">Student Name</label>
+                <input type="text" id="input-student" placeholder="e.g. Aditi Sharma" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-pratyakshGreen transition font-sci tracking-wide" oninput="updateCert()">
+            </div>
+
+            <!-- Date -->
+            <div>
+                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">Date Issued</label>
+                <input type="text" id="input-date" placeholder="e.g. October 24, 2025" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/50 transition font-sci" oninput="updateCert()">
+            </div>
+
+            <!-- Custom Body -->
+            <div>
+                <label class="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">Custom Description</label>
+                <textarea id="input-body" rows="3" placeholder="Leave empty for default text..." class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-white/50 transition font-sans" oninput="updateCert()"></textarea>
+            </div>
+
+        </div>
+
+        <div class="mt-auto pt-6 border-t border-white/10 pb-10 md:pb-0">
+            <button onclick="downloadCert()" class="w-full py-4 bg-white text-black font-bold font-sci text-lg rounded-lg hover:bg-pratyakshOrange hover:text-white transition shadow-lg flex items-center justify-center gap-2">
+                <span>⬇</span> DOWNLOAD PNG
+            </button>
+            <p id="status-msg" class="text-xs text-center text-gray-500 mt-2 h-4"></p>
+        </div>
+    </div>
+
+    <!-- RIGHT PANEL: PREVIEW AREA -->
+    <div class="w-full md:w-2/3 bg-gray-900 flex items-center justify-center p-4 md:p-10 overflow-hidden">
+        
+        <div class="preview-container" id="preview-wrapper">
+            
+            <!-- THE CERTIFICATE CANVAS -->
+            <div id="certificate-preview" class="bg-offWhite bg-pattern flex flex-col items-center justify-between p-12 relative">
                 
-                <!-- Added rel="noopener noreferrer" for security on external links -->
-                <a href="https://instagram.com/projectpratyaksh" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 glass-card px-6 py-4 rounded-xl hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,153,51,0.3)] hover:border-pratyakshOrange/50 hover:-translate-y-1 transition-all duration-300 w-full md:w-auto justify-center">
-                    <span>📸</span>
-                    <span class="font-bold font-sci tracking-wide">Instagram</span>
-                </a>
-                
-                <a href="https://www.linkedin.com/in/projectpratyaksh/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 glass-card px-6 py-4 rounded-xl hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,153,51,0.3)] hover:border-pratyakshOrange/50 hover:-translate-y-1 transition-all duration-300 w-full md:w-auto justify-center">
-                    <span>💼</span>
-                    <span class="font-bold font-sci tracking-wide">LinkedIn</span>
-                </a>
+                <!-- Decorative Corners -->
+                <div class="absolute top-0 left-0 w-32 h-32 border-l-4 border-t-4 border-pratyakshOrange rounded-tl-3xl m-4"></div>
+                <div class="absolute top-0 right-0 w-32 h-32 border-r-4 border-t-4 border-pratyakshGreen rounded-tr-3xl m-4"></div>
+                <div class="absolute bottom-0 left-0 w-32 h-32 border-l-4 border-b-4 border-pratyakshGreen rounded-bl-3xl m-4"></div>
+                <div class="absolute bottom-0 right-0 w-32 h-32 border-r-4 border-b-4 border-pratyakshOrange rounded-br-3xl m-4"></div>
+
+                <!-- Header: CO-BRANDING -->
+                <div class="w-full flex justify-between items-center border-b border-gray-200 pb-6 px-8 mt-4">
+                    <!-- Project Pratyaksh Side -->
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-br from-pratyakshOrange to-pratyakshGreen flex items-center justify-center font-bold text-white text-sm shadow-md overflow-hidden">
+                            <img src="logo.png" alt="PP" class="w-full h-full object-cover opacity-95" onerror="this.style.display='none';this.parentElement.innerText='PP'">
+                        </div>
+                        <div class="text-left">
+                            <h3 class="font-sci font-bold text-xl text-gray-800 tracking-wider">PROJECT PRATYAKSH</h3>
+                            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Science Initiative</p>
+                        </div>
+                    </div>
+
+                    <div class="text-gray-300 font-light text-2xl">×</div>
+
+                    <!-- School Side (Dynamic Logo) -->
+                    <div class="flex items-center gap-4 text-right">
+                        <div class="text-right">
+                            <h3 id="disp-school-header" class="font-sci font-bold text-xl text-gray-800 tracking-wider uppercase">SCHOOL NAME</h3>
+                            <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Education Partner</p>
+                        </div>
+                        <!-- Logo Container -->
+                        <div class="w-16 h-16 rounded-full bg-white border border-gray-200 flex items-center justify-center overflow-hidden relative shadow-sm">
+                            <span id="default-school-icon" class="text-3xl">🏫</span>
+                            <img id="disp-school-logo" src="" class="absolute inset-0 w-full h-full object-contain hidden bg-white" alt="School Logo">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="flex-1 flex flex-col items-center justify-center text-center w-3/4 mx-auto z-10">
+                    
+                    <h1 id="disp-title" class="font-script text-7xl text-gray-800 mb-2 mt-4">Certificate of Collaboration</h1>
+                    
+                    <p class="text-gray-500 uppercase tracking-widest text-sm font-bold mb-4">THIS IS PROUDLY PRESENTED TO</p>
+                    
+                    <!-- Dynamic Recipient Name -->
+                    <h2 id="disp-name" class="font-sci font-bold text-6xl text-transparent bg-clip-text bg-gradient-to-r from-pratyakshOrange to-pratyakshGreen mb-2 leading-tight py-2 uppercase drop-shadow-sm">
+                        GOVT HIGH SCHOOL
+                    </h2>
+
+                    <!-- Module Subtitle -->
+                    <p id="disp-module" class="font-sci font-bold text-xl text-pratyakshOrange mb-6 uppercase tracking-widest hidden">COMPLETED: MODULE A</p>
+                    
+                    <!-- Dynamic Body Text -->
+                    <p id="disp-body" class="font-sans text-xl text-gray-600 leading-relaxed max-w-4xl">
+                        In recognition of your visionary partnership with Project Pratyaksh. Together, we have successfully conducted workshops to replace rote learning with observation, igniting the spark of scientific curiosity in young minds.
+                    </p>
+                </div>
+
+                <!-- Footer / Signatures -->
+                <div class="w-full flex justify-between items-end px-16 pb-8">
+                    <div class="text-center">
+                        <div class="h-px w-48 bg-gray-400 mb-2"></div>
+                        <p class="font-sci font-bold text-sm text-gray-600 uppercase tracking-wider">Project Lead</p>
+                        <p class="text-xs text-pratyakshOrange">Project Pratyaksh</p>
+                    </div>
+
+                    <!-- Badge/Seal -->
+                    <div class="flex flex-col items-center justify-center">
+                        <div class="w-28 h-28 rounded-full border-4 border-double border-gray-200 flex items-center justify-center bg-white shadow-inner relative">
+                            <!-- Subtle Seal Animation/Look -->
+                            <div class="absolute inset-1 border border-gray-100 rounded-full"></div>
+                            <div class="text-center z-10">
+                                <p class="text-[10px] font-bold text-pratyakshGreen uppercase tracking-widest">Zero Cost</p>
+                                <p class="font-sanskrit text-sm text-pratyakshOrange font-bold mt-1 mb-1 leading-tight">प्रत्यक्षं किं<br>प्रमाणम्</p>
+                                <p class="text-[10px] font-bold text-pratyakshGreen uppercase tracking-widest">Science</p>
+                            </div>
+                        </div>
+                        <p id="disp-date" class="mt-4 font-mono text-sm text-gray-500">October 24, 2025</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="h-px w-48 bg-gray-400 mb-2"></div>
+                        <p class="font-sci font-bold text-sm text-gray-600 uppercase tracking-wider">Principal / Head</p>
+                        <p id="disp-school-sig" class="text-xs text-gray-500 uppercase">School Representative</p>
+                    </div>
+                </div>
+
+                <!-- Bottom Color Bar -->
+                <div class="absolute bottom-0 left-0 w-full h-3 border-gradient"></div>
+
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer class="border-t border-white/10 py-8 bg-black text-center text-gray-500 text-sm">
-        <p class="font-sanskrit text-lg mb-2 animate-tagline">"प्रत्यक्षं किं प्रमाणम्"</p>
-        <p>&copy; 2025 Project Pratyaksh.</p>
-    </footer>
-
-    <!-- REPEATABLE ANIMATION LOGIC -->
+    <!-- LOGIC -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const observerOptions = {
-                threshold: 0.15, // Trigger when 15% of the item is visible
-                rootMargin: "0px 0px -50px 0px" // Slight offset to make it feel natural
-            };
+        // --- 🔒 PASSKEY LOGIC ---
+        const VALID_PASSKEY = "pratyaksh"; // CHANGE THIS to your desired password!
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // When element enters viewport: ADD active class (Play animation)
-                        entry.target.classList.add('active');
-                    } else {
-                        // When element leaves viewport: REMOVE active class (Reset animation)
-                        // This ensures it plays again next time you scroll to it.
-                        entry.target.classList.remove('active');
-                    }
-                });
-            }, observerOptions);
+        function checkPasskey() {
+            const input = document.getElementById('passkey-input').value;
+            const msg = document.getElementById('login-msg');
+            
+            if(input.toLowerCase() === VALID_PASSKEY) {
+                // Correct Password: Hide overlay
+                document.getElementById('login-overlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('login-overlay').style.display = 'none';
+                }, 500);
+            } else {
+                // Incorrect
+                msg.textContent = "INCORRECT PASSKEY. ACCESS DENIED.";
+                document.getElementById('passkey-input').value = "";
+                document.getElementById('passkey-input').focus();
+            }
+        }
 
-            const elements = document.querySelectorAll('.reveal');
-            elements.forEach(el => observer.observe(el));
+        // Allow pressing "Enter" to login
+        document.getElementById('passkey-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') checkPasskey();
         });
-    </script>
 
+
+        // --- CERTIFICATE LOGIC ---
+        // State
+        let mode = 'school'; 
+        const defaults = {
+            schoolTitle: "Certificate of Collaboration",
+            studentTitle: "Certificate of Merit",
+            schoolBody: "In recognition of your visionary partnership with Project Pratyaksh. Together, we have successfully conducted workshops to replace rote learning with observation, igniting the spark of scientific curiosity in young minds.",
+            studentBody: "For demonstrating exceptional curiosity and scientific temper during the Project Pratyaksh workshop. This student has shown that science is not just about textbooks, but about observing the universe with their own eyes."
+        };
+
+        // DOM Elements
+        const els = {
+            btnSchool: document.getElementById('btn-school'),
+            btnStudent: document.getElementById('btn-student'),
+            studentFields: document.getElementById('student-fields'),
+            inputSchool: document.getElementById('input-school'),
+            inputStudent: document.getElementById('input-student'),
+            inputModule: document.getElementById('input-module'),
+            inputDate: document.getElementById('input-date'),
+            inputBody: document.getElementById('input-body'),
+            inputLogo: document.getElementById('input-logo'),
+            // Display Elements
+            dispSchoolHeader: document.getElementById('disp-school-header'),
+            dispTitle: document.getElementById('disp-title'),
+            dispName: document.getElementById('disp-name'),
+            dispModule: document.getElementById('disp-module'),
+            dispBody: document.getElementById('disp-body'),
+            dispDate: document.getElementById('disp-date'),
+            dispSchoolSig: document.getElementById('disp-school-sig'),
+            // Logo Elements
+            imgSchoolLogo: document.getElementById('disp-school-logo'),
+            iconDefault: document.getElementById('default-school-icon')
+        };
+
+        // Handle Scale
+        function resizePreview() {
+            const wrapper = document.getElementById('preview-wrapper');
+            const cert = document.getElementById('certificate-preview');
+            const wrapperWidth = wrapper.offsetWidth;
+            const scale = (wrapperWidth - 40) / 1123; 
+            
+            if (scale < 1) {
+                cert.style.transform = `scale(${scale})`;
+                const heightDiff = 794 - (794 * scale);
+                cert.style.marginBottom = `-${heightDiff}px`;
+                cert.style.marginRight = `-${1123 - (1123*scale)}px`; 
+            } else {
+                cert.style.transform = 'scale(1)';
+                cert.style.margin = '0';
+            }
+        }
+        window.addEventListener('resize', resizePreview);
+        window.addEventListener('load', () => { resizePreview(); updateCert(); });
+
+        // Logic
+        function setMode(newMode) {
+            mode = newMode;
+            
+            if(mode === 'school') {
+                els.btnSchool.className = "flex-1 py-2 rounded-md text-sm font-bold transition bg-pratyakshOrange text-white shadow-md";
+                els.btnStudent.className = "flex-1 py-2 rounded-md text-sm font-bold transition text-gray-400 hover:text-white";
+                els.studentFields.classList.add('hidden');
+            } else {
+                els.btnSchool.className = "flex-1 py-2 rounded-md text-sm font-bold transition text-gray-400 hover:text-white";
+                els.btnStudent.className = "flex-1 py-2 rounded-md text-sm font-bold transition bg-pratyakshGreen text-white shadow-md";
+                els.studentFields.classList.remove('hidden');
+            }
+            updateCert();
+        }
+
+        function updateLogo() {
+            const file = els.inputLogo.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    els.imgSchoolLogo.src = e.target.result;
+                    els.imgSchoolLogo.classList.remove('hidden');
+                    els.iconDefault.classList.add('hidden');
+                }
+                reader.readAsDataURL(file);
+            } else {
+                els.imgSchoolLogo.src = "";
+                els.imgSchoolLogo.classList.add('hidden');
+                els.iconDefault.classList.remove('hidden');
+            }
+        }
+
+        function updateCert() {
+            const schoolName = els.inputSchool.value || "SCHOOL NAME";
+            els.dispSchoolHeader.textContent = schoolName;
+            els.dispSchoolSig.textContent = schoolName;
+
+            els.dispDate.textContent = els.inputDate.value || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            // Handle Module Display Logic
+            const moduleVal = els.inputModule.value;
+            let moduleText = "";
+            if(moduleVal) {
+                const cleanModule = moduleVal.split(":")[0];
+                if(cleanModule.includes("Modules")) {
+                     moduleText = (mode === 'school' ? "CONDUCTED: " : "COMPLETED: ") + "MODULES A & B";
+                } else {
+                     moduleText = (mode === 'school' ? "CONDUCTED: " : "COMPLETED: ") + cleanModule;
+                }
+                els.dispModule.textContent = moduleText;
+                els.dispModule.classList.remove('hidden');
+            } else {
+                els.dispModule.classList.add('hidden');
+            }
+
+            if (mode === 'school') {
+                els.dispTitle.textContent = defaults.schoolTitle;
+                els.dispName.textContent = schoolName;
+                els.dispBody.innerHTML = els.inputBody.value || defaults.schoolBody;
+            } else {
+                els.dispTitle.textContent = defaults.studentTitle;
+                els.dispName.textContent = els.inputStudent.value || "STUDENT NAME";
+                
+                if(els.inputBody.value) {
+                    els.dispBody.innerHTML = els.inputBody.value;
+                } else {
+                    const boldSchool = `<span class="font-bold text-gray-900">${schoolName}</span>`;
+                    els.dispBody.innerHTML = defaults.studentBody.replace("Project Pratyaksh workshop", `Project Pratyaksh workshop at ${boldSchool}`);
+                }
+            }
+        }
+
+        function downloadCert() {
+            const certNode = document.getElementById('certificate-preview');
+            const status = document.getElementById('status-msg');
+            
+            status.textContent = "Generating high-res image...";
+            
+            const originalTransform = certNode.style.transform;
+            certNode.style.transform = 'scale(1)';
+            
+            html2canvas(certNode, {
+                scale: 2, 
+                useCORS: true,
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                certNode.style.transform = originalTransform;
+                const link = document.createElement('a');
+                const cleanName = (mode === 'school' ? els.inputSchool.value : els.inputStudent.value) || "Certificate";
+                link.download = `Pratyaksh_Cert_${cleanName.replace(/\s+/g, '_')}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                status.textContent = "Download started!";
+                setTimeout(() => status.textContent = "", 3000);
+            }).catch(err => {
+                console.error(err);
+                status.textContent = "Error generating image.";
+                certNode.style.transform = originalTransform;
+            });
+        }
+    </script>
 </body>
 </html>
